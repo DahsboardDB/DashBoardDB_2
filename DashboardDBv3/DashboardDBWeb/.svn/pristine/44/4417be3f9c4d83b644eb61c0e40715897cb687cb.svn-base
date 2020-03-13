@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<center>
+		<h:form enctype="multipart/form-data" id="insertarGestion">
+			<p:growl id="growl" showDetail="true" sticky="true" />
+
+			<p:panel id="pnlTipificar" styleClass="panels"
+				style="border: none;">
+				<f:facet name="header">
+					<p:column colspan="4">
+						<p:outputLabel
+							value="Tipificar ${tipificarBean.nombreTipificacion}"></p:outputLabel>
+					</p:column>
+				</f:facet>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel for="slcTipificacion" value="Tipificación:"></p:outputLabel>
+					</p:column>
+					<br />
+					<p:column>
+						<p:selectOneMenu id="slcTipificacion" required="true"
+							requiredMessage="Por favor seleccione la tipificación"
+							value="#{tipificarBean.selectedCodigoTipificacion}"
+							style="width:50%" autoWidth="false">
+							<p:ajax listener="#{tipificarBean.onChangeTipificacion}"
+								update="@form:panelCamposTipificacion" />
+
+							<f:selectItem itemLabel="Selecione....." itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems var="tipificacion" autocomplete="off"
+								value="#{tipificarBean.tipificaciones}"
+								itemValue="#{tipificacion.codigo}"
+								itemLabel="#{tipificacion.nombre}" />
+
+							<p:message for="slcTipificacion" />
+						</p:selectOneMenu>
+					</p:column>
+				</p:row>
+
+
+				<br />
+				<br />
+				<p:panel id="panelCamposTipificacion" style="border: none;">
+					<c:if test="#{tipificarBean.opcionTercero == 1}">
+						<ui:include src="/pages/tipificacion/mensajeTercero.xhtml"></ui:include>
+					</c:if>
+
+					<c:if test="#{tipificarBean.opcionAgendamiento == 1}">
+						<ui:include src="/pages/tipificacion/agendamiento.xhtml"></ui:include>
+					</c:if>
+				</p:panel>
+
+				<p:row>
+					<p:column>
+						<p:outputLabel for="txtObservacion" value="Observación:"></p:outputLabel>
+					</p:column>
+					<br />
+					<p:column>
+						<p:inputTextarea value="#{tipificarBean.observacion}"
+							autocomplete="off" id="txtObservacion" required="true"
+							requiredMessage="Por favor escriba la observación"
+							style="width:50%" cols="30" maxlength="800">
+							<p:message for="txtObservacion" />
+						</p:inputTextarea>
+					</p:column>
+				</p:row>
+				<br />
+				<br />
+				<p:row>
+					<p:column>
+						<p:commandButton value="guardar" icon="ui-icon-disk"  ajax="false"
+							styleClass="green-btn"
+							onclick="guardarNuevaGestion('#{tipificarBean.selectedCodigoTipificacion}')"
+							action="#{gestionBean.guardarGestion}"
+							update="insertarGestion:growl">
+						</p:commandButton>
+					</p:column>
+				</p:row>
+
+				<br />
+
+			</p:panel>
+
+		</h:form>
+	</center>
+
+
+
+</ui:composition>

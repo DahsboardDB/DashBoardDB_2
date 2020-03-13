@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<c:choose>
+	<c:when test="${pagoBean.pagos.size() > 0}">
+
+			<p:dataScroller var="pago" value="#{pagoBean.pagos}"
+				style="border: none;" styleClass="green-btn">
+
+				<h:panelGrid columns="2" style="width:100%">
+					<p:outputPanel style="border-bottom: 1px solid grey">
+						<h:panelGrid>
+							<h:panelGrid columns="2" cellpadding="6">
+
+								<h:outputText value="Id Pago: " />
+								<h:outputText value="#{pago.idPago}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{pago.idCargue != null}"
+									value="Id Cargue: " />
+								<h:outputText rendered="#{pago.idCargue != null}"
+									value="#{pago.idCargue}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{pago.usuarioFin != null}"
+									value="Usuario Fin:" />
+								<h:outputText rendered="#{pago.usuarioFin != null}"
+									value="#{pago.usuarioFin}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{pago.rango  != null}" value="Rango:" />
+								<h:outputText rendered="#{pago.rango  != null}"
+									value="#{pago.rango}" style="font-weight: bold" />
+
+
+								<h:outputText rendered="#{pago.tipoCartera != ''}"
+									value="TipoCartera:" />
+								<h:outputText rendered="#{pago.tipoCartera != ''}"
+									value="#{pago.tipoCartera}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{pago.codigoDeudor != ''}"
+									value="Codigo Deudor:" />
+								<h:outputText rendered="#{pago.codigoDeudor != ''}"
+									value="#{pago.codigoDeudor}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{pago.nombreDeudor != ''}"
+									value="Nombre Deudor:" />
+								<h:outputText rendered="#{pago.nombreDeudor != ''}"
+									value="#{pago.nombreDeudor}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{pago.codigoObligacion != ''}"
+									value="Código Obligacion:" />
+								<h:outputText rendered="#{pago.codigoObligacion != ''}"
+									value="#{pago.codigoObligacion}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{pago.nombreAgencia != ''}"
+									value="Nombre Agencia:" />
+								<h:outputText rendered="#{pago.nombreAgencia != ''}"
+									value="#{pago.nombreAgencia}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{pago.carteraINH != ''}"
+									value="Cartera INH:" />
+								<h:outputText rendered="#{pago.carteraINH != ''}"
+									value="#{pago.carteraINH}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{pago.codigoMoneda != ''}"
+									value="Código Moneda:" />
+								<h:outputText rendered="#{pago.codigoMoneda != ''}"
+									value="#{pago.codigoMoneda}" style="font-weight: bold" />
+
+								<h:outputText
+									rendered="#{pago.pagoReal != '' || pago.pagoReal != 0.0 || pago.pagoReal != null}"
+									value="Pago Real:" />
+								<h:outputText
+									rendered="#{pago.pagoReal != '' || pago.pagoReal  != 0.0  || pago.pagoReal != null}"
+									value="#{pago.pagoReal}" style="font-weight: bold">
+									<f:convertNumber pattern="¤#,##0.00" currencySymbol="S" />
+								</h:outputText>
+
+								<h:outputText
+									rendered="#{pago.pagoRealSoles != '' || pago.pagoRealSoles != 0.0 || pago.pagoRealSoles != null}"
+									value="Pago Real Soles:" />
+								<h:outputText
+									rendered="#{pago.pagoRealSoles != '' || pago.pagoRealSoles  != 0.0  || pago.pagoRealSoles != null}"
+									value="#{pago.pagoRealSoles}" style="font-weight: bold">
+									<f:convertNumber pattern="¤#,##0.00" currencySymbol="S" />
+								</h:outputText>
+
+								<h:outputText rendered="#{pago.fechaUltimoPago != null}"
+									value="Fecha último pago:" />
+								<h:outputText rendered="#{pago.fechaUltimoPago != null}"
+									value="#{pago.fechaUltimoPago}" style="font-weight: bold" />
+
+							</h:panelGrid>
+
+						</h:panelGrid>
+					</p:outputPanel>
+				</h:panelGrid>
+			</p:dataScroller>
+
+		</c:when>
+
+		<c:otherwise>
+			<p>No hay Pagos para este Deudor</p>
+		</c:otherwise>
+
+	</c:choose>
+</ui:composition>

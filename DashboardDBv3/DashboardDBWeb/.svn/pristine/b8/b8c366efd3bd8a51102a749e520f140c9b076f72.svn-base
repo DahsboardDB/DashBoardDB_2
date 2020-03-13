@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="frmBuscarAgenda">
+
+		<div>
+			<div class="exception-wrapper">
+				<p:panel id="contenidoBusquedaAgenda">
+					<p:dataTable var="agenda" value="#{busquedaAgendaBean.agendas}"
+						selectionMode="single" rowKey="#{agenda.documentoDeudor}"
+						emptyMessage="No hay clientes agendados" reflow="true"
+						style="margin-bottom:20px">
+						<f:facet name="header">Clientes Agendados</f:facet>
+
+						<p:column headerText="Telefono Agendamiento"
+							sortBy="#{agenda.telefonoAgendamiento}">
+							<h:outputText value="#{agenda.telefonoAgendamiento}" />
+							<br/>
+							<p:commandButton update="@form:carDetail" rendered="#{not empty  agenda.telefonoAgendamiento }"
+								onclick="fun_include_dial(#{agenda.telefonoAgendamiento})"
+								oncomplete="PF('carDialog').show()" icon="fa fa-phone">
+								<f:setPropertyActionListener value="#{agenda}"
+									target="#{busquedaAgendaBean.selectedAgenda}" />
+							</p:commandButton>
+						</p:column>
+
+						<p:column headerText="Documento Deudor"
+							sortBy="#{agenda.documentoDeudor}">
+							<h:outputText value="#{agenda.documentoDeudor}" />
+						</p:column>
+
+						<p:column headerText="Telefono Marcado"
+							sortBy="#{agenda.telefonoMarcado}">
+							<h:outputText value="#{agenda.telefonoMarcado}" />
+							<br/>
+							<p:commandButton update="@form:carDetail2" rendered="#{agenda.telefonoMarcado != null}"
+								onclick="fun_include_dial(#{agenda.telefonoMarcado})"
+								oncomplete="PF('carDialog2').show()" icon="fa fa-phone">
+								<f:setPropertyActionListener value="#{agenda}"
+									target="#{busquedaAgendaBean.selectedAgenda}" />
+							</p:commandButton>
+						</p:column>
+
+						<p:column headerText="Asesor" sortBy="#{agenda.asesor}">
+							<h:outputText value="#{agenda.asesor}" />
+						</p:column>
+
+						<p:column headerText="Fecha Agendamiento"
+							sortBy="#{agenda.fechaAgendamiento}">
+							<h:outputText value="#{agenda.fechaAgendamiento}" />
+						</p:column>
+
+						<p:column headerText="Observación" sortBy="#{agenda.observacion}">
+							<h:outputText value="#{agenda.observacion}" />
+						</p:column>
+					</p:dataTable>
+
+					<p:dialog header="Gestionar Cliente" widgetVar="carDialog"
+						modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+						<p:outputPanel id="carDetail" style="text-align:center;">
+							<p:panelGrid columns="2" columnClasses="label,value">
+
+								<h:outputText value="Gestionar Número"
+									rendered="#{busquedaAgendaBean.selectedAgenda.telefonoAgendamiento != null}" />
+								<h:outputText
+									value="#{busquedaAgendaBean.selectedAgenda.telefonoAgendamiento}"
+									rendered="#{busquedaAgendaBean.selectedAgenda.telefonoAgendamiento != null}" />
+
+								<h:outputText value="Gestionar" />
+								<p:commandButton id="buttonDetallePriorizacion"
+									icon="fa fa-check" ajax="false"
+									action="#{busquedaAgendaBean.redireccionarDatosClienteAgendamiento(busquedaAgendaBean.selectedAgenda.documentoDeudor, busquedaAgendaBean.selectedAgenda.idAgenda, busquedaAgendaBean.selectedAgenda.telefonoAgendamiento)}"
+									onclick="PF('statusDialog').show();"
+									oncomplete="PF('statusDialog').hide();" update="@form:growl">
+								</p:commandButton>
+
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+					
+					<p:dialog header="Gestionar Cliente" widgetVar="carDialog2"
+						modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+						<p:outputPanel id="carDetail2" style="text-align:center;">
+							<p:panelGrid columns="2" columnClasses="label,value">
+
+								<h:outputText value="Gestionar Número"
+									rendered="#{busquedaAgendaBean.selectedAgenda.telefonoMarcado != null}" />
+								<h:outputText
+									value="#{busquedaAgendaBean.selectedAgenda.telefonoMarcado}"
+									rendered="#{busquedaAgendaBean.selectedAgenda.telefonoMarcado != null}" />
+
+								<h:outputText value="Gestionar" />
+								<p:commandButton id="buttonDetallePriorizacion2"
+									icon="fa fa-check" ajax="false"
+									action="#{busquedaAgendaBean.redireccionarDatosClienteAgendamiento(busquedaAgendaBean.selectedAgenda.documentoDeudor, busquedaAgendaBean.selectedAgenda.idAgenda, busquedaAgendaBean.selectedAgenda.telefonoMarcado)}"
+									onclick="PF('statusDialog').show();"
+									oncomplete="PF('statusDialog').hide();" update="@form:growl">
+								</p:commandButton>
+
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+				</p:panel>
+			</div>
+		</div>
+	</h:form>
+
+
+</ui:composition>

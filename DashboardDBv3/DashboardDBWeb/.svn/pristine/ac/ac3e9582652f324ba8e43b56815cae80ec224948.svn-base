@@ -1,0 +1,34 @@
+package co.sistemcobro.dashboarddb.bean;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import org.apache.log4j.Logger;
+
+import co.sistemcobro.dashboarddb.ejb.IInstanciasEJBLocal;
+
+
+public class InstanciasBean implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(InstanciasBean.class); 
+	ArrayList <Instancias> ConsultarListadoInstancias;
+	
+	private IInstanciasEJBLocal instanciasEJB; 
+	
+	
+	public void consultarInstancias(String criterio) {
+		
+		try {
+			
+			ConsultarListadoInstancias = instanciasEJB.ConsultarListadoInstancia(criterio);
+			
+		} catch (Exception e) {
+			
+			logger.error(e.getMessage(), e);
+		}
+		
+	}
+}

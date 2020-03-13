@@ -1,0 +1,520 @@
+package co.sistemcobro.dashboarddb.bean;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.log4j.Logger;
+
+import co.sistemcobro.dashboarddb.session.LoginBean;
+import co.sistemcobro.dashboarddb.constante.EstadoEnum;
+import co.sistemcobro.dashboarddb.ejb.IPoliticaDescuentoEJBLocal;
+import co.sistemcobro.dashboarddb.ejb.ITipificacionEJBLocal;
+
+@ManagedBean(name = "tipificarBean")
+@ViewScoped
+public class TipificarBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(TipificarBean.class);
+	private LoginBean loginBean;
+	List<Tipificacion> tipificaciones;
+
+	@EJB
+	private ITipificacionEJBLocal tipificacionEJB;
+
+	@EJB
+	private IPoliticaDescuentoEJBLocal politicaDescuentoEJB;
+
+	private String nombreTipificacion;
+	private String selectedCodigoTipificacion;
+	private String observacion;
+	private ClienteBean clienteBean;
+	private OpcionesBean opcionBean;
+
+	private Date fechaPromesa;
+	private Date fechaAgendamiento;
+	private double montoPromesa;
+	private double montoCuota;
+
+	private String nombreTercero;
+	private String telefonoAgendado;
+
+	private Integer opcionPromesa;
+	private Integer opcionAgendamiento;
+	private Integer opcionAgendar;
+	private Integer opcionTercero;
+	private boolean acuerdo;
+	private boolean agendaLlamada;
+
+	// acuerdo
+	private Double valorTotal = new Double(0);
+	private Integer cantidadCuotas;
+	private Double valorAcuerdo = new Double(0);
+	private Date fechaAcuerdo;
+	private Integer negociarCuotas;
+	private List<AcuerdoCuota> cuotasAcuerdo;
+	private Integer contadorCuotas;
+
+	private boolean value2;
+	private boolean valueDeseaFraccionar;
+
+	private String telefonoMarcado;
+
+	private UsuarioAplicacion usuarioAplicacion;
+
+	@PostConstruct
+	public void init() {
+		if (FacesContext.getCurrentInstance() != null) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			Application application = context.getApplication();
+			clienteBean = (application.evaluateExpressionGet(context, "#{clienteBean}", ClienteBean.class));
+			loginBean = (application.evaluateExpressionGet(context, "#{loginBean}", LoginBean.class));
+			opcionBean = (application.evaluateExpressionGet(context, "#{opcionesBean}", OpcionesBean.class));
+			try {
+				this.setearValores();
+				acuerdo = false;
+				value2 = false;
+				agendaLlamada = false;
+
+				String valorDeudaStr = clienteBean.getObligacion().getDeudaVencida().replace(".", ".");
+				double totalDeuda = Double.parseDouble(valorDeudaStr);
+				negociarCuotas = 0;
+				valorTotal = clienteBean.getDeudaTotalizada();
+				cuotasAcuerdo = new ArrayList<>();
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+			}
+		}
+	}
+
+	public void calcularCuotas() {
+		try {
+			cuotasAcuerdo = new ArrayList<>();
+			Date fecha = new Date();
+			fecha = fechaAcuerdo;
+			negociarCuotas = 1;
+			if (fecha != null) {
+				if (cantidadCuotas != null) {
+					if (cantidadCuotas > 0) {
+						AcuerdoCuota cuotaAcuerdo = null;
+						int cont = 1;
+						for (int i = 0; i < cantidadCuotas; i++) {
+							cuotaAcuerdo = new AcuerdoCuota();
+
+							contadorCuotas = cont;
+							cuotaAcuerdo.setNumeroCuota(contadorCuotas);
+							cuotaAcuerdo.setCantidadCuotas(cantidadCuotas);
+							cuotaAcuerdo.setValorTotalDeuda(valorTotal);
+							cuotaAcuerdo.setValorAcuerdo((valorTotal / cantidadCuotas));
+							cuotaAcuerdo.setFechaAcuerdo(new Timestamp(fecha.getTime()));
+							cuotaAcuerdo
+									.setIdUsuarioCrea(Integer.parseInt(loginBean.getUsuarioHermes().getCodusuario()));
+							cuotaAcuerdo.setEstado(EstadoEnum.ACTIVO.getIndex());
+							fecha = this.sumarMesAfecha(fecha);
+
+							cuotasAcuerdo.add(cuotaAcuerdo);
+							cont++;
+						}
+					}
+				} else {
+					if (negociarCuotas == 1 && isValueDeseaFraccionar()) {
+						FacesContext.getCurrentInstance().addMessage(null,
+								new FacesMessage(FacesMessage.SEVERITY_WARN, "Info", "Por favor digite las cuotas "));
+					}
+				}
+			} else {
+				if (negociarCuotas == 1 && isValueDeseaFraccionar()) {
+					FacesContext.getCurrentInstance().addMessage(null,
+							new FacesMessage(FacesMessage.SEVERITY_WARN, "Info", "Por favor selecione la fecha"));
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	public Date sumarMesAfecha(Date fecha) {
+		Calendar c1 = Calendar.getInstance();
+		try {
+			c1.setTime(fecha);
+			c1.add(Calendar.MONTH, 1);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return c1.getTime();
+	}
+
+	public void consultarTipificacion(Integer idNivel, String nombrePadre) {
+		try {
+			tipificaciones = tipificacionEJB.tipificaciones(idNivel);
+			nombreTipificacion = nombrePadre;
+			opcionBean.setearValores();
+			if (idNivel == 3) {
+				opcionBean.setOpcionPromesa(1);
+				opcionBean.setOpcionComboTipificacion(0);
+				acuerdo = true;
+				valorTotal = new Double(0);
+				valorTotal = clienteBean.getDeudaTotalizada();
+				
+			} else {
+				opcionBean.setOpcionComboTipificacion(1);
+				opcionBean.setOpcionPromesa(0);
+			}
+			this.setearValores();
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	
+	public void onChangeTipificacion() {
+		try {
+			this.setearValores();
+			if (selectedCodigoTipificacion.equals("GCMAT") || selectedCodigoTipificacion.equals("LMEN")
+					|| selectedCodigoTipificacion.equals("LMAT")) {
+				opcionTercero = 1;
+			}
+
+			if (selectedCodigoTipificacion.equals("LVOLL")) {
+				opcionAgendamiento = 1;
+				value2 = false;
+				agendaLlamada = true;
+			}
+
+			if (selectedCodigoTipificacion.equals("LPTO") || selectedCodigoTipificacion.equals("LPPP")
+					|| selectedCodigoTipificacion.equals("LCPI")) {
+				opcionPromesa = 1;
+				acuerdo = true;
+
+				// PoliticaDescuento politica = new PoliticaDescuento();
+				//
+				// politica =
+				// politicaDescuentoEJB.descuentoMinyMax(clienteBean.getObligacion().getRangoMora(),
+				// clienteBean.getObligacion().getRangoUIT());
+				//
+				// String valorDeudaStr =
+				// clienteBean.getObligacion().getDeudaVencida().replace(",",
+				// ".");
+				// double totalDeuda = Double.parseDouble(valorDeudaStr);
+				//
+				// double valorDescuentoMin1 = (totalDeuda *
+				// politica.getDescMin());
+				// double valorDescuentoMax1 = (totalDeuda *
+				// politica.getDescMax());
+				//
+				// valorDescuentoMin = formatearDecimales(valorDescuentoMin1,
+				// 3);
+				// valorDescuentoMax = formatearDecimales(valorDescuentoMax1,
+				// 3);
+
+			}
+
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		} finally {
+
+		}
+
+	}
+
+	public Double formatearDecimales(Double numero, Integer numeroDecimales) {
+		return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
+	}
+
+	public void metodoAgendar() {
+		try {
+			String summary = value2 ? "Checked" : "Unchecked";
+			if (summary.equals("Checked")) {
+				opcionAgendamiento = 1;
+			} else {
+				opcionAgendamiento = 0;
+			}
+			// opcionAgendamiento = summary ? ;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	public void setearValores() {
+		opcionPromesa = 0;
+		opcionAgendar = 0;
+		opcionTercero = 0;
+		agendaLlamada = false;
+		opcionAgendamiento = 0;
+	}
+
+	public List<Tipificacion> getTipificaciones() {
+		return tipificaciones;
+	}
+
+	public void setTipificaciones(List<Tipificacion> tipificaciones) {
+		this.tipificaciones = tipificaciones;
+	}
+
+	public ITipificacionEJBLocal getTipificacionEJB() {
+		return tipificacionEJB;
+	}
+
+	public void setTipificacionEJB(ITipificacionEJBLocal tipificacionEJB) {
+		this.tipificacionEJB = tipificacionEJB;
+	}
+
+	public ClienteBean getClienteBean() {
+		return clienteBean;
+	}
+
+	public void setClienteBean(ClienteBean clienteBean) {
+		this.clienteBean = clienteBean;
+	}
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
+	}
+
+	public OpcionesBean getOpcionBean() {
+		return opcionBean;
+	}
+
+	public void setOpcionBean(OpcionesBean opcionBean) {
+		this.opcionBean = opcionBean;
+	}
+
+	public UsuarioAplicacion getUsuarioAplicacion() {
+		return usuarioAplicacion;
+	}
+
+	public void setUsuarioAplicacion(UsuarioAplicacion usuarioAplicacion) {
+		this.usuarioAplicacion = usuarioAplicacion;
+	}
+
+	public String getNombreTipificacion() {
+		return nombreTipificacion;
+	}
+
+	public void setNombreTipificacion(String nombreTipificacion) {
+		this.nombreTipificacion = nombreTipificacion;
+	}
+
+	public String getSelectedCodigoTipificacion() {
+		return selectedCodigoTipificacion;
+	}
+
+	public void setSelectedCodigoTipificacion(String selectedCodigoTipificacion) {
+		this.selectedCodigoTipificacion = selectedCodigoTipificacion;
+	}
+
+	public String getObservacion() {
+		return observacion;
+	}
+
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+
+	public Date getFechaPromesa() {
+		return fechaPromesa;
+	}
+
+	public void setFechaPromesa(Date fechaPromesa) {
+		this.fechaPromesa = fechaPromesa;
+	}
+
+	public Date getFechaAgendamiento() {
+		return fechaAgendamiento;
+	}
+
+	public void setFechaAgendamiento(Date fechaAgendamiento) {
+		this.fechaAgendamiento = fechaAgendamiento;
+	}
+
+	public double getMontoPromesa() {
+		return montoPromesa;
+	}
+
+	public void setMontoPromesa(double montoPromesa) {
+		this.montoPromesa = montoPromesa;
+	}
+
+	public double getMontoCuota() {
+		return montoCuota;
+	}
+
+	public void setMontoCuota(double montoCuota) {
+		this.montoCuota = montoCuota;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Integer getOpcionPromesa() {
+		return opcionPromesa;
+	}
+
+	public void setOpcionPromesa(Integer opcionPromesa) {
+		this.opcionPromesa = opcionPromesa;
+	}
+
+	public String getNombreTercero() {
+		return nombreTercero;
+	}
+
+	public void setNombreTercero(String nombreTercero) {
+		this.nombreTercero = nombreTercero;
+	}
+
+	public String getTelefonoAgendado() {
+		return telefonoAgendado;
+	}
+
+	public void setTelefonoAgendado(String telefonoAgendado) {
+		this.telefonoAgendado = telefonoAgendado;
+	}
+
+	public Integer getOpcionAgendamiento() {
+		return opcionAgendamiento;
+	}
+
+	public void setOpcionAgendamiento(Integer opcionAgendamiento) {
+		this.opcionAgendamiento = opcionAgendamiento;
+	}
+
+	public Integer getOpcionAgendar() {
+		return opcionAgendar;
+	}
+
+	public void setOpcionAgendar(Integer opcionAgendar) {
+		this.opcionAgendar = opcionAgendar;
+	}
+
+	public boolean isValue2() {
+		return value2;
+	}
+
+	public void setValue2(boolean value2) {
+		this.value2 = value2;
+	}
+
+	public boolean isAcuerdo() {
+		return acuerdo;
+	}
+
+	public void setAcuerdo(boolean acuerdo) {
+		this.acuerdo = acuerdo;
+	}
+
+	public String getTelefonoMarcado() {
+		return telefonoMarcado;
+	}
+
+	public void setTelefonoMarcado(String telefonoMarcado) {
+		this.telefonoMarcado = telefonoMarcado;
+	}
+
+	public IPoliticaDescuentoEJBLocal getPoliticaDescuentoEJB() {
+		return politicaDescuentoEJB;
+	}
+
+	public void setPoliticaDescuentoEJB(IPoliticaDescuentoEJBLocal politicaDescuentoEJB) {
+		this.politicaDescuentoEJB = politicaDescuentoEJB;
+	}
+
+	public Integer getOpcionTercero() {
+		return opcionTercero;
+	}
+
+	public void setOpcionTercero(Integer opcionTercero) {
+		this.opcionTercero = opcionTercero;
+	}
+
+	public boolean isAgendaLlamada() {
+		return agendaLlamada;
+	}
+
+	public void setAgendaLlamada(boolean agendaLlamada) {
+		this.agendaLlamada = agendaLlamada;
+	}
+
+	public Double getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(Double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
+	public Integer getCantidadCuotas() {
+		return cantidadCuotas;
+	}
+
+	public void setCantidadCuotas(Integer cantidadCuotas) {
+		this.cantidadCuotas = cantidadCuotas;
+	}
+
+	public Double getValorAcuerdo() {
+		return valorAcuerdo;
+	}
+
+	public void setValorAcuerdo(Double valorAcuerdo) {
+		this.valorAcuerdo = valorAcuerdo;
+	}
+
+	public Date getFechaAcuerdo() {
+		return fechaAcuerdo;
+	}
+
+	public void setFechaAcuerdo(Date fechaAcuerdo) {
+		this.fechaAcuerdo = fechaAcuerdo;
+	}
+
+	public Integer getNegociarCuotas() {
+		return negociarCuotas;
+	}
+
+	public void setNegociarCuotas(Integer negociarCuotas) {
+		this.negociarCuotas = negociarCuotas;
+	}
+
+	public List<AcuerdoCuota> getCuotasAcuerdo() {
+		return cuotasAcuerdo;
+	}
+
+	public void setCuotasAcuerdo(List<AcuerdoCuota> cuotasAcuerdo) {
+		this.cuotasAcuerdo = cuotasAcuerdo;
+	}
+
+	public Integer getContadorCuotas() {
+		return contadorCuotas;
+	}
+
+	public void setContadorCuotas(Integer contadorCuotas) {
+		this.contadorCuotas = contadorCuotas;
+	}
+
+	public boolean isValueDeseaFraccionar() {
+		return valueDeseaFraccionar;
+	}
+
+	public void setValueDeseaFraccionar(boolean valueDeseaFraccionar) {
+		this.valueDeseaFraccionar = valueDeseaFraccionar;
+	}
+
+}

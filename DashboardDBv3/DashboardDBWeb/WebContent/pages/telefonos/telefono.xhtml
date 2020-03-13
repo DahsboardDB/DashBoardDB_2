@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+
+<!-- 		<h:outputLabel value="Número de Teléfono:" style="font-weight: bold" /> -->
+<!-- 		<h:inputText value="#{clienteBean.telefonoMarcado}" /> -->
+<!-- 		<p:commandButton id="buttonDetallePriorizacion" icon="fa fa-phone" -->
+<!-- 			onclick="fun_include_dial(#{clienteBean.telefonoMarcado})"> -->
+<!-- 			<p:ajax -->
+<!-- 				listener="#{clienteBean.guardarTelefono(clienteBean.telefonoMarcado)}" -->
+<!-- 				process="@form" /> -->
+<!-- 		</p:commandButton> -->
+
+		<p:dataScroller var="telefono" value="#{telefonosBean.telefonos}"
+			style="border: none;">
+
+			<p:outputPanel style="border-bottom: 1px solid grey">
+				<table>
+					<tr>
+						<td><h:outputLabel value="Id Deudor"
+								style="font-weight: bold" /></td>
+						<td><h:outputLabel value="${telefono.idDeudor}"
+								readonly="true" style="text-align: right" /></td>
+					</tr>
+
+					<tr>
+						<td><h:outputLabel value="Documento Deudor"
+								style="font-weight: bold" /></td>
+						<td><h:outputLabel value="${telefono.numeroDocumentoDeudor}"
+								readonly="true" style="text-align: right" /></td>
+					</tr>
+
+					<tr>
+						<td><h:outputLabel value="Código de Teléfono:"
+								style="font-weight: bold" /></td>
+						<td><h:outputLabel value="${telefono.codigoTelefono}"
+								readonly="true" style="text-align: right" /></td>
+					</tr>
+
+					<tr>
+						<td><h:outputLabel value="Origen:" style="font-weight: bold" /></td>
+						<h:panelGroup rendered="#{telefono.origen eq 'Lista Negra'}">
+							<td><h:outputLabel value="${telefono.origen}"
+									readonly="true"
+									style="text-align: right; font-weight: bold; color:#FF0000;" /></td>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{telefono.origen ne 'Lista Negra'}">
+							<td><h:outputLabel value="${telefono.origen}"
+									readonly="true"
+									style="text-align: right; font-weight: bold; color:green;" /></td>
+						</h:panelGroup>
+					</tr>
+
+					<tr>
+						<td><h:outputLabel value="Número de Teléfono:"
+								style="font-weight: bold" /></td>
+						<td><h:outputLabel value="${telefono.numeroTelefono}"
+								readonly="true" style="text-align: right" /></td>
+					</tr>
+
+					<h:panelGroup rendered="#{telefono.origen ne 'Lista Negra'}">
+						<tr>
+							<td><h:outputLabel value="Llamar:" style="font-weight: bold" /></td>
+							<td><p:commandButton id="buttonDetallePriorizacion"
+									icon="fa fa-phone"
+									onclick="fun_include_dial(#{telefono.numeroTelefono})">
+
+									<p:ajax
+										listener="#{clienteBean.guardarTelefono(telefono.numeroTelefono)}"
+										process="@form" />
+
+								</p:commandButton></td>
+						</tr>
+					</h:panelGroup>
+				</table>
+			</p:outputPanel>
+		</p:dataScroller>
+	</h:form>
+
+</ui:composition>

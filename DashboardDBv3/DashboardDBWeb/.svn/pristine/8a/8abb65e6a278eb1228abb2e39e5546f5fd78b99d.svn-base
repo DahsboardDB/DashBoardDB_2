@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<style type="text/css">
+.cars-datalist .text-column p:last-child {
+	color: #757575;
+}
+
+.cars-datalist .car-item {
+	padding: 8px 14px;
+}
+
+.cars-datalist .car-item img, .cars-datalist .car-item .car-details {
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 14px;
+}
+
+.cars-datalist .car-item button {
+	float: right;
+}
+
+.cars-datalist ul {
+	margin: 0;
+	padding: 0;
+}
+
+.ui-car-display td:last-child {
+	font-weight: 700;
+}
+
+@media ( max-width :640px) {
+	.cars-datalist .text-column {
+		text-align: center;
+	}
+}
+</style>
+
+
+	<h:form>
+
+		<p:dataGrid var="obligacion" value="#{clienteBean.obligaciones}"
+			styleClass="ui-panelgrid-blank" columns="1" layout="grid"
+			paginator="false" id="cars"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			style="width:100%">
+
+			<f:facet name="header">
+                   Información Obligación
+            </f:facet>
+
+			<h:panelGrid columns="1" style="width:100%">
+				<p:selectBooleanCheckbox id="id"
+					value="#{clienteBean.obligacionSelected}"
+					rendered="#{clienteBean.obligaciones.size() > 1}">
+					<p:ajax process="@this" update="panelDescuentos"
+						listener="#{clienteBean.escucharObligacion(obligacion.idObligacion,obligacion.deudaVencida)}" />
+				</p:selectBooleanCheckbox>
+			</h:panelGrid>
+
+			<!-- 1ra columna -->
+			<div class="ui-g-12 ui-md-4">
+				<h:panelGrid columns="2">
+
+					<h:outputLabel value="Número Crédito:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.numeroObligacion}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="FOGAPI:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.fogapi}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Fecha Último Pago:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.fechaUltimoPago}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Días Mora:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.diasMora}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Estado:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.estado}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Cant. Cuotas Pagadas:"
+						style="font-weight: bold" />
+					<p:inputText value="${obligacion.numeroCuotasPagadas}"
+						readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Capital Vencido:" style="font-weight: bold" />
+					<p:inputText value="S/ ${obligacion.capitalVencido}"
+						readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Compensatorio Total:"
+						style="font-weight: bold" />
+					<p:inputText value="S/ ${obligacion.compensatorioTotal}"
+						readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Deuda Total:" style="font-weight: bold" />
+
+					<p:inputText value="S/ ${obligacion.deudaVencida}" readonly="true"
+						style="color:red; border: 1px solid #f00; text-align: center;"
+						inputStyle="text-align: right" />
+
+				</h:panelGrid>
+			</div>
+
+			<!-- 2da columna -->
+			<div class="ui-g-12 ui-md-4">
+				<h:panelGrid columns="2">
+
+					<h:outputLabel value="Max. Días Mora:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.maxDiasMora}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Tipo de Crédito:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.tipoCredito}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Cant. Cuotas Vencidas:"
+						style="font-weight: bold" />
+					<p:inputText value="${obligacion.numeroCuotasVencidas}"
+						readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Monto Aprobado:" style="font-weight: bold" />
+					<p:inputText value="S/ ${obligacion.montoDesembolsado}"
+						readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Plazo del Crédito:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.plazoCredito}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Fecha Desembolso:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.fechaDesembolso}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Total Intereses:" style="font-weight: bold" />
+					<p:inputText value="S/ ${obligacion.totalInteses}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Total Cargos:" style="font-weight: bold" />
+
+					<p:inputText value="S/ ${obligacion.totalCargos}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Campaña Piso:" style="font-weight: bold" />
+
+					<p:inputText value="${obligacion.campana}" readonly="true"
+						style="color:red; border: 1px solid #f00; text-align: center;" />
+
+				</h:panelGrid>
+			</div>
+
+			<!-- 3ra columna -->
+			<div class="ui-g-12 ui-md-4">
+				<h:panelGrid columns="2">
+
+					<h:outputLabel value="Tipo De Riesgo:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.tipoRiesgo}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Producto:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.producto}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Cant. Entidades Adeuda:"
+						style="font-weight: bold" />
+
+					<p:inputText value="${obligacion.numeroEntidadesAdeuda}"
+						readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Fecha Último Pago:" style="font-weight: bold" />
+
+					<p:inputText value="${obligacion.fechaUltimoPago2}" readonly="true"
+						style="color:green; border: none; text-align: center;">
+						<f:convertDateTime pattern="yyyy-MM-dd" />
+					</p:inputText>
+
+					<h:outputLabel value="Moneda:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.moneda}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Saldo Capital:" style="font-weight: bold" />
+					<p:inputText value="S/ ${obligacion.saldoCapital}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Total Mora:" style="font-weight: bold" />
+					<p:inputText value="S/ ${obligacion.totalMora}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Importe ITF:" style="font-weight: bold" />
+					<p:inputText value="S/ ${obligacion.importeITF}" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+
+					<h:outputLabel value="Edad Cliente:" style="font-weight: bold" />
+					<p:inputText value="${obligacion.edad} Años" readonly="true"
+						style="color:green; border: none; text-align: center;" />
+				</h:panelGrid>
+			</div>
+
+		</p:dataGrid>
+
+	</h:form>
+
+</ui:composition>

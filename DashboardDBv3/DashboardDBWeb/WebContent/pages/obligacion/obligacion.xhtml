@@ -1,0 +1,200 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">${mensaje.CABECERA_LOGIN}</ui:define>
+
+	<ui:define name="viewname">${mensaje.CABECERA_LOGIN}</ui:define>
+
+	<ui:define name="head">
+		<script type="text/javascript">
+			//<![CDATA[
+			function skinChart() {
+				this.cfg.shadow = false;
+				this.cfg.title = '';
+				this.cfg.seriesColors = [ '#00acac', '#3e96e7' ];
+				this.cfg.grid = {
+					background : '#ffffff',
+					borderColor : '#ffffff',
+					gridLineColor : '#EEEEEE',
+					shadow : false
+				};
+				this.cfg.axesDefaults = {
+					rendererOptions : {
+						textColor : '#212121'
+					}
+				};
+				this.cfg.seriesDefaults = {
+					shadow : false,
+					lineWidth : 1,
+					markerOptions : {
+						shadow : false,
+						size : 7,
+						style : 'circle'
+					}
+				}
+			}
+			//]]>
+		</script>
+
+		<style type="text/css">
+.main-content {
+	padding: 0;
+}
+
+body .ui-datagrid .ui-datagrid-header {
+	background-color: #57C279;
+}
+
+body .ui-panel .ui-panel-titlebar {
+	background-color: #57C279;
+}
+
+body .ui-widget-header {
+	background-color: #57C279;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="content">
+		<div class="ui-g dashboard">
+		
+			<div class="ui-g-12">
+				<ui:include src="/pages/cliente/infoObligacionCliente.xhtml"></ui:include>
+			</div>
+
+			<p:panel id="panelDescuentos" style="border: none;">
+				<div class="ui-g-12 ui-md-6">
+					<div class="ui-g card overview-box overview-box-1">
+						<div class="ui-g-4">
+							<i class="fa fa-money"></i>
+						</div>
+						<div class="ui-g-8">
+							<span class="overview-box-count"> <h:outputLabel
+							 		id="deudaTotal"
+									value="#{clienteBean.deudaTotalizada}" /></span> <span
+								class="overview-box-name">Valor Total Deuda</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="ui-g-12 ui-md-6">
+					<div class="ui-g card overview-box overview-box-3">
+						<div class="ui-g-4">
+							<i class="fa fa-money"></i>
+						</div>
+						<div class="ui-g-8">
+							<span class="overview-box-count"> <h:outputLabel
+									value="#{clienteBean.capitalDeuda}" /></span> <span
+								class="overview-box-name">Capital</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="ui-g-12 ui-md-12">
+					<div class="ui-g card overview-box overview-box-2">
+						<div class="ui-g-4">
+							<i class="fa fa-cloud"></i>
+						</div>
+						<div class="ui-g-8">
+							<span class="overview-box-count"> <h:outputLabel
+									value="#{clienteBean.valorDescuentoCampana}" />
+							</span> <span class="overview-box-name">Descuento Diferenciado</span>
+						</div>
+					</div>
+				</div>
+								
+			</p:panel>
+
+			<c:choose>
+				<c:when
+					test="#{opcionesBean.opcionComboTipificacion == 1 and (opcionesBean.opcionTelefonos == 1 
+							and opcionesBean.opcionTelefonos == 1 || opcionesBean.opcionMemo == 1 
+							|| opcionesBean.opcionPagos == 1 || opcionesBean.opcionDatoAdicional == 1)}">
+					<div class="ui-g-12">
+						<p:panel header="Tipificar" style="min-height:360px">
+							<ui:include src="/pages/tipificacion/tipificar.xhtml"></ui:include>
+						</p:panel>
+					</div>
+				</c:when>
+
+				<c:when test="#{opcionesBean.opcionComboTipificacion == 1}">
+					<div id="panelTipificaciones" class="ui-g-12 ui-md-8">
+						<ui:include src="/pages/tipificacion/tipificar.xhtml"></ui:include>
+					</div>
+				</c:when>
+
+				<c:when test="#{opcionesBean.opcionPromesa == 1}">
+					<div id="panelPromesa" class="ui-g-12 ui-md-8">
+						<ui:include src="/pages/tipificacion/promesa.xhtml"></ui:include>
+					</div>
+				</c:when>
+
+			</c:choose>
+
+			<c:if test="#{opcionesBean.opcionTelefonos == 1}">
+				<div id="panelTelefonos" class="ui-g-12 ui-md-8">
+					<p:panel header="Teléfonos" style="min-height:360px">
+						<ui:include src="/pages/telefonos/telefono.xhtml"></ui:include>
+					</p:panel>
+				</div>
+			</c:if>
+
+			<c:if test="#{opcionesBean.opcionMemo == 1}">
+				<div id="panelMemo" class="ui-g-12 ui-md-8">
+					<p:panel header="Memo" style="min-height:360px; border: none;">
+						<ui:include src="/pages/memo/memo.xhtml"></ui:include>
+					</p:panel>
+				</div>
+			</c:if>
+
+			<c:if test="#{opcionesBean.opcionPagos == 1}">
+				<div id="panelPagos" class="ui-g-12 ui-md-8">
+					<p:panel header="Pagos" style="min-height:360px; border: none;">
+						<ui:include src="/pages/pago/pago.xhtml"></ui:include>
+					</p:panel>
+				</div>
+			</c:if>
+
+			<c:if test="#{opcionesBean.opcionDatoAdicional == 1}">
+				<div id="panelDatosAdicionales" class="ui-g-12 ui-md-8">
+					<p:panel header="Datos Adicionales"
+						style="min-height:360px; border: none;">
+						<ui:include src="/pages/datoAdicional/dato_adicional.xhtml"></ui:include>
+					</p:panel>
+				</div>
+			</c:if>
+
+			<c:choose>
+				<c:when
+					test="#{(opcionesBean.opcionComboTipificacion == 1 or opcionesBean.opcionPromesa == 1)
+							or opcionesBean.opcionTelefonos == 1
+							or opcionesBean.opcionMemo == 1 or opcionesBean.opcionPagos == 1
+							or opcionesBean.opcionDatoAdicional == 1
+							}">
+					<div class="ui-g-12 ui-lg-4 contacts">
+						<p:panel header="Información del cliente" style="min-height:360px">
+							<ui:include src="/pages/cliente/infoCliente.xhtml"></ui:include>
+						</p:panel>
+					</div>
+				</c:when>
+
+				<c:otherwise>
+					<div class="ui-g-12">
+						<p:panel header="Información del cliente" style="min-height:360px">
+							<ui:include src="/pages/cliente/infoCliente.xhtml"></ui:include>
+						</p:panel>
+					</div>
+				</c:otherwise>
+
+			</c:choose>
+
+
+		</div>
+	</ui:define>
+
+</ui:composition>

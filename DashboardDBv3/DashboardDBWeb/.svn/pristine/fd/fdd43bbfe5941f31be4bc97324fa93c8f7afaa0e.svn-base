@@ -1,0 +1,182 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templateInicio.xhtml"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+	<ui:define name="head">
+
+		<script type="text/javascript">
+			function start() {
+				PF('statusDialog').show();
+			}
+
+			function stop() {
+				PF('statusDialog').hide();
+			}
+
+			PrimeFaces.shedule
+			PrimeFaces.locales["es"] = {
+				closeText : "Cerrar",
+				prevText : "Anterior",
+				nextText : "Siguiente",
+				monthNames : [ "Enero", "Febrero", "Marzo", "Abril", "Mayo",
+						"Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+						"Noviembre", "Diciembre" ],
+				monthNamesShort : [ "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+						"Jul", "Ago", "Sep", "Oct", "Nov", "Dic" ],
+				dayNames : [ "Domingo", "Lunes", "Martes", "Miércoles",
+						"Jueves", "Viernes", "Sábado" ],
+				dayNamesShort : [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie",
+						"Sab" ],
+				dayNamesMin : [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
+				weekHeader : "Semana",
+				firstDay : 0,
+				isRTL : false,
+				showMonthAfterYear : false,
+				yearSuffix : "",
+				timeOnlyTitle : "Solo hora",
+				timeText : "Tiempo",
+				hourText : "Hora",
+				minuteText : "Minuto",
+				secondText : "Segundo",
+				currentText : "Fecha actual",
+				ampm : false,
+				month : "Mes",
+				week : "Semana",
+				day : "Día",
+				allDayText : "Todo el día"
+			};
+		</script>
+		<style type="text/css">
+.fc-agendaWeek-button ui-button ui-state-default {
+	display: none;
+}
+
+.fc-agendaDay-button ui-button ui-state-default ui-corner-right {
+	display: none;
+}
+
+.cars-datalist .text-column p:last-child {
+	color: #757575;
+}
+
+.cars-datalist .car-item {
+	padding: 8px 14px;
+}
+
+.cars-datalist .car-item img, .cars-datalist .car-item .car-details {
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 14px;
+}
+
+.cars-datalist .car-item button {
+	float: right;
+}
+
+.cars-datalist ul {
+	margin: 0;
+	padding: 0;
+}
+
+.ui-car-display td:last-child {
+	font-weight: 700;
+}
+
+@media ( max-width :640px) {
+	.cars-datalist .text-column {
+		text-align: center;
+	}
+}
+</style>
+	</ui:define>
+
+	<ui:define name="title">${mensaje.CABECERA_LOGIN}</ui:define>
+
+	<ui:define name="viewname">${mensaje.CABECERA_LOGIN}</ui:define>
+
+	<ui:define name="content">
+		<div class="ui-g">
+			<div class="ui-g-12">
+
+				<h:form>
+					<p:tabMenu activeIndex="#{opcionesBean.i}">
+						<p:menuitem value="Búsqueda"
+							actionListener="#{opcionesBean.verBusqueda}" ajax="false"
+							update="panelBusqueda,panelCalendario,panelAdminFestivos,panelAgendamiento,panelComites">
+							<f:param name="i" value="0" />
+						</p:menuitem>
+
+						<p:menuitem value="Calendario Feriado"
+							actionListener="#{opcionesBean.verCalendario}" ajax="false"
+							update="panelCalendario,panelBusqueda,panelAdminFestivos,panelAgendamiento,panelComites">
+							<f:param name="i" value="1" />
+						</p:menuitem>
+
+						<c:if
+							test="#{opcionesBean.loginBean.usuarioHermes.usuarioaplicacion.idgrupo eq 384}">
+							<p:menuitem value="Administrar Calendario Feriado" styleClass="#57C279"
+								actionListener="#{opcionesBean.administrarFestivos}"
+								ajax="false"
+								update="panelCalendario,panelBusqueda,panelAdminFestivos,panelAgendamiento,panelComites">
+								<f:param name="i" value="2" />
+							</p:menuitem>
+						</c:if>
+
+						<p:menuitem value="Agendamiento"
+							actionListener="#{opcionesBean.verAgendamiento}" ajax="false"
+							update="panelCalendario,panelBusqueda,panelAdminFestivos,panelAgendamiento,panelComites">
+							<f:param name="i" value="3" />
+						</p:menuitem>
+						<c:if
+							test="#{opcionesBean.loginBean.usuarioHermes.usuarioaplicacion.idgrupo eq 384}">
+							<p:menuitem value="Gestiones Pendientes"
+								actionListener="#{opcionesBean.verGestionesPorAprobar}"
+								ajax="false"
+								update="panelCalendario,panelBusqueda,panelAdminFestivos,panelAgendamiento,panelComites">
+								<f:param name="i" value="4" />
+							</p:menuitem>
+						</c:if>
+
+					</p:tabMenu>
+				</h:form>
+
+
+
+				<c:if test="#{opcionesBean.opcionBusqueda == 1}">
+					<p:panel id="panelBusqueda">
+						<ui:include src="/pages/buscar/busqueda.xhtml"></ui:include>
+					</p:panel>
+				</c:if>
+
+				<c:if test="#{opcionesBean.opcionCalendario == 1}">
+					<p:panel id="panelCalendario">
+						<ui:include src="/pages/calendario/calendario.xhtml"></ui:include>
+					</p:panel>
+				</c:if>
+
+				<c:if test="#{opcionesBean.opcionAdminFestivos == 1}">
+					<p:panel id="panelAdminFestivos">
+						<ui:include src="/pages/calendario/adminFestivos.xhtml"></ui:include>
+					</p:panel>
+				</c:if>
+
+				<c:if test="#{opcionesBean.opcionAgendamiento == 1}">
+					<p:panel id="panelAgendamiento">
+						<ui:include src="/pages/agendar/agenda.xhtml"></ui:include>
+					</p:panel>
+				</c:if>
+
+				<c:if test="#{opcionesBean.opcionGestionPorAprobar == 1}">
+					<p:panel id="panelComites">
+						<ui:include src="/pages/comite/comite.xhtml"></ui:include>
+					</p:panel>
+				</c:if>
+
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

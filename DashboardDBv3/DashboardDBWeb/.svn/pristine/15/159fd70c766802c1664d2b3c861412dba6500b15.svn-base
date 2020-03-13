@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templateInicio.xhtml"
+	import="/WEB-INF/menu.xhtml"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+	<ui:define name="head">
+
+		<script type="text/javascript">
+			function start() {
+				PF('statusDialog').show();
+			}
+
+			function stop() {
+				PF('statusDialog').hide();
+			}
+
+			PrimeFaces.shedule
+			PrimeFaces.locales["es"] = {
+				closeText : "Cerrar",
+				prevText : "Anterior",
+				nextText : "Siguiente",
+				monthNames : [ "Enero", "Febrero", "Marzo", "Abril", "Mayo",
+						"Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+						"Noviembre", "Diciembre" ],
+				monthNamesShort : [ "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+						"Jul", "Ago", "Sep", "Oct", "Nov", "Dic" ],
+				dayNames : [ "Domingo", "Lunes", "Martes", "Miércoles",
+						"Jueves", "Viernes", "Sábado" ],
+				dayNamesShort : [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie",
+						"Sab" ],
+				dayNamesMin : [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
+				weekHeader : "Semana",
+				firstDay : 0,
+				isRTL : false,
+				showMonthAfterYear : false,
+				yearSuffix : "",
+				timeOnlyTitle : "Solo hora",
+				timeText : "Tiempo",
+				hourText : "Hora",
+				minuteText : "Minuto",
+				secondText : "Segundo",
+				currentText : "Fecha actual",
+				ampm : false,
+				month : "Mes",
+				week : "Semana",
+				day : "Día",
+				allDayText : "Todo el día"
+			};
+		</script>
+		<style type="text/css">
+.fc-agendaWeek-button ui-button ui-state-default {
+	display: none;
+}
+
+.fc-agendaDay-button ui-button ui-state-default ui-corner-right {
+	display: none;
+}
+
+.cars-datalist .text-column p:last-child {
+	color: #757575;
+}
+
+.cars-datalist .car-item {
+	padding: 8px 14px;
+}
+
+.cars-datalist .car-item img, .cars-datalist .car-item .car-details {
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 14px;
+}
+
+.cars-datalist .car-item button {
+	float: right;
+}
+
+.cars-datalist ul {
+	margin: 0;
+	padding: 0;
+}
+
+.ui-car-display td:last-child {
+	font-weight: 700;
+}
+
+@media ( max-width :640px) {
+	.cars-datalist .text-column {
+		text-align: center;
+	}
+}
+</style>
+	</ui:define>
+
+	<ui:define name="title">${mensaje.CABECERA_LOGIN}</ui:define>
+
+	<ui:define name="viewname">${mensaje.CABECERA_LOGIN}</ui:define>
+
+	<ui:define name="content">
+
+
+				<h:form>
+				
+             <ui:include src="/pages/Lista/Listas.xhtml"></ui:include>
+             
+				</h:form>
+
+
+
+
+	</ui:define>
+</ui:composition>

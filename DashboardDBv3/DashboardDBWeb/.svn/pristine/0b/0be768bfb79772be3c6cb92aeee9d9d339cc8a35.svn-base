@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<center>
+
+		<table>
+			<tr>
+				<td><h:outputLabel value="Nombre:   " rendered="#{clienteBean.cliente.nombreDeudor != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.cliente.nombreDeudor}" readonly="true" rendered="#{clienteBean.cliente.nombreDeudor != ''}"
+						style="text-align: right" /></td>
+			</tr>
+		
+			<tr>
+				<td><h:outputLabel value="Tipo de Documento:   " rendered="#{clienteBean.obligacion.tipoDocumento != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.tipoDocumento}" readonly="true" rendered="#{clienteBean.obligacion.tipoDocumento != ''}"
+						style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Documento:   " rendered="#{clienteBean.obligacion.numeroDocumento != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.numeroDocumento}" readonly="true" rendered="#{clienteBean.obligacion.numeroDocumento != ''}"
+						style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Código Único Cliente:   "  rendered="#{clienteBean.obligacion.codigoUnicoCliente != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.codigoUnicoCliente}" rendered="#{clienteBean.obligacion.codigoUnicoCliente != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Dirección Domicilio:   " rendered="#{clienteBean.obligacion.direccionDomicilio != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.direccionDomicilio}" rendered="#{clienteBean.obligacion.direccionDomicilio != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Descripción Dirección Domicilio:   " rendered="#{clienteBean.obligacion.descripcionDomicilio != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.descripcionDomicilio}" rendered="#{clienteBean.obligacion.descripcionDomicilio != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Referencia Adicional Domicilio:   " rendered="#{clienteBean.obligacion.direccionAdicionalDomicilio != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.direccionAdicionalDomicilio}" rendered="#{clienteBean.obligacion.direccionAdicionalDomicilio != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Departamento:   " rendered="#{clienteBean.obligacion.departamento != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.departamento}" readonly="true" rendered="#{clienteBean.obligacion.departamento != ''}"
+						style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Provincia:   " rendered="#{clienteBean.obligacion.provincia != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel value="${clienteBean.obligacion.provincia}" rendered="#{clienteBean.obligacion.provincia != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Distrito:   " rendered="#{clienteBean.obligacion.distrito != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel value="${clienteBean.obligacion.distrito}" rendered="#{clienteBean.obligacion.distrito != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Tipo de Documento Conyuge:   "  rendered="#{clienteBean.obligacion.tipoDocumentoConyuge != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.tipoDocumentoConyuge}" rendered="#{clienteBean.obligacion.tipoDocumentoConyuge != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Documento Conyuge:   " rendered="#{clienteBean.obligacion.numeroDocumentoConyuge != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.numeroDocumentoConyuge}" rendered="#{clienteBean.obligacion.numeroDocumentoConyuge != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Nombre Conyuge:   " rendered="#{clienteBean.obligacion.nombreConyuge != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.nombreConyuge}" readonly="true" rendered="#{clienteBean.obligacion.nombreConyuge != ''}"
+						style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Código Agencia Cliente:   " rendered="#{clienteBean.obligacion.codigoAgencia != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.codigoAgencia}" readonly="true" rendered="#{clienteBean.obligacion.codigoAgencia != ''}"
+						style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Nombre Agencia Cliente:   " rendered="#{clienteBean.obligacion.nombreAgencia != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.nombreAgencia}" readonly="true" rendered="#{clienteBean.obligacion.nombreAgencia != ''}"
+						style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Código Agencia Origen:   " rendered="#{clienteBean.obligacion.codigoAgenciaOrigen != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.codigoAgenciaOrigen}"  rendered="#{clienteBean.obligacion.codigoAgenciaOrigen != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Nombre Agencia Origen:   " rendered="#{clienteBean.obligacion.codigoAgenciaOrigen != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.nombreAgenciaOrigen}" rendered="#{clienteBean.obligacion.codigoAgenciaOrigen != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Tipo de Documento Aval:   " rendered="#{clienteBean.obligacion.tipoDocumentoAvalista != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.tipoDocumentoAvalista}" rendered="#{clienteBean.obligacion.tipoDocumentoAvalista != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Documento Aval:   " rendered="#{clienteBean.obligacion.numeroDocumentoAvalista != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.numeroDocumentoAvalista}" rendered="#{clienteBean.obligacion.numeroDocumentoAvalista != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Nombre Aval:   " rendered="#{clienteBean.obligacion.nombreAvalista != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.nombreAvalista}" readonly="true" rendered="#{clienteBean.obligacion.nombreAvalista != ''}"
+						style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel
+						value="Tipo de Documento Representante Legal:   " rendered="#{clienteBean.obligacion.tipoDocumentoRepresentanteLegal != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.tipoDocumentoRepresentanteLegal}" rendered="#{clienteBean.obligacion.tipoDocumentoRepresentanteLegal != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Documento Representante Legal:   " rendered="#{clienteBean.obligacion.numeroDocumentoRepresentanteLegal != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.numeroDocumentoRepresentanteLegal}" rendered="#{clienteBean.obligacion.numeroDocumentoRepresentanteLegal != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Nombre Representante Legal:   " rendered="#{clienteBean.obligacion.nombreRepresentanteLegal != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.nombreRepresentanteLegal}" rendered="#{clienteBean.obligacion.nombreRepresentanteLegal != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Dirección Domicilio Bantotal:   " rendered="#{clienteBean.obligacion.direccionBantotal != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.direccionBantotal}" rendered="#{clienteBean.obligacion.direccionBantotal != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Departamento Bantotal:   " rendered="#{clienteBean.obligacion.departamentoBantotal != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.departamentoBantotal}" rendered="#{clienteBean.obligacion.departamentoBantotal != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Provincia Bantotal:   " rendered="#{clienteBean.obligacion.provinciaBantotal != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.provinciaBantotal}" rendered="#{clienteBean.obligacion.provinciaBantotal != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Distrito Bantotal:   " rendered="#{clienteBean.obligacion.distritoBantotal != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.distritoBantotal}" readonly="true" rendered="#{clienteBean.obligacion.distritoBantotal != ''}"
+						style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Dirección Negocio:   " rendered="#{clienteBean.obligacion.direccionNegocio != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.direccionNegocio}" readonly="true" rendered="#{clienteBean.obligacion.direccionNegocio != ''}"
+						style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Descripción Dirección Negocio:   " rendered="#{clienteBean.obligacion.descripcionDireccionNegocio != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.descripcionDireccionNegocio}" rendered="#{clienteBean.obligacion.descripcionDireccionNegocio != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Departamento Negocio:   " rendered="#{clienteBean.obligacion.departamentoDireccionNegocio != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.departamentoDireccionNegocio}" rendered="#{clienteBean.obligacion.departamentoDireccionNegocio != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Provincia Negocio:   " rendered="#{clienteBean.obligacion.provinciaDireccionNegocio != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.provinciaDireccionNegocio}" rendered="#{clienteBean.obligacion.provinciaDireccionNegocio != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+
+			<tr>
+				<td><h:outputLabel value="Distrito Negocio:   " rendered="#{clienteBean.obligacion.distritoDireccionNegocio != ''}"
+						style="font-weight: bold" /></td>
+				<td><h:outputLabel
+						value="${clienteBean.obligacion.distritoDireccionNegocio}" rendered="#{clienteBean.obligacion.distritoDireccionNegocio != ''}"
+						readonly="true" style="text-align: right" /></td>
+			</tr>
+		</table>
+	</center>
+</ui:composition>

@@ -1,0 +1,78 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pp="http://primefaces.org/poseidon">
+    
+    <script type="text/javascript" src="../../resources/js/ipdialbox.js"></script>
+
+    <h:form id="menuform"> 
+        <div class="layout-menu-container">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">                 
+                    <pp:menu widgetVar="me">
+                                        	
+                    	<p:submenu  label="Instancias" icon="fa fa-edit" var="ConsultarListadoInstancias" value="#{instanciasBean.consultarListadoInstancias}">
+                                        
+                           <p:menuitem itemValue="#{ConsultarListadoInstancias.Instancia}" itemLabel="#{ConsultarListadoInstancias.dnsname}"/>             
+                                        
+                        </p:submenu>           
+                        
+                        <p:submenu id="om_customization" label="PRUEBA SQL LISTA" icon="fa fa-fw fa-bars" >
+                                                        
+                            <p:menuitem id="custom3" value="Menú estático"  actionListener="#{instanciasBean.consultarListadoInstancias('static')}" ajax="false"/>
+
+                        </p:submenu>
+                        <p:submenu id="om_orientation" label="Orientación" icon="fa fa-fw fa-align-right">
+                            <p:menuitem id="om_rtl" value="Derecha" icon="fa fa-fw fa-align-right" actionListener="#{guestPreferences.setOrientationRTL(true)}" ajax="false" />
+                           
+                        </p:submenu>       
+                        
+                        <p:menuitem value="Volver" icon="fa fa-mail-reply" outcome="/pages/inicio/inicio.xhtml" ajax="false"/>
+                    </pp:menu>
+						
+					
+						
+                    <div class="layout-menu-footer">                        
+                    </div>
+
+                </div>
+                
+                
+                
+                
+            </div>
+        </div>
+    </h:form>
+     <p:menuitem  value="GESTION CAMPO" icon="fa fa-calculator"  actionListener="#{tipificarBean.consultarTipificacion(1,'GESTION CAMPO')}" ajax="false"  update="panelTipificaciones"  />
+</ui:composition>
+
+<!--                         <p:menuitem value="Teléfonos" icon="fa fa-phone-square" actionListener="#{telefonosBean.telefonos}" ajax="false" update="panelTelefonos"  /> -->
+                    	
+<!--                     	<p:menuitem value="Datos Adicionales" icon="fa fa-plus-square" actionListener="#{datoAdicionalBean.datosAdicionales}" ajax="false" update="panelDatosAdicionales"  /> -->
+                    	
+<!--                     	<p:menuitem value="Memo" icon="fa fa-file-text-o" actionListener="#{memoBean.gestiones}" ajax="false" update="panelMemo"  /> -->
+                    	
+<!--                     	<p:menuitem value="Historico de Pagos" icon="fa fa-folder-open" actionListener="#{pagoBean.pagos}" ajax="false" update="panelPagos"  /> -->
+
+
+<!--                             <p:menuitem value="YA PAGO" icon="fa fa-money"  actionListener="#{tipificarBean.consultarTipificacion(2,'YA PAGO')}" ajax="false" update="panelTipificaciones"  />  -->
+<!--                             <p:menuitem value="PROMESA" icon="fa fa-bank"  actionListener="#{tipificarBean.consultarTipificacion(3,'PROMESA')}" ajax="false" update="panelPromesa"  /> -->
+<!--                             <p:menuitem value="OTROS" icon="fa fa-edit"  actionListener="#{tipificarBean.consultarTipificacion(4,'OTROS')}" ajax="false" update="panelTipificaciones"  /> -->
+<!--                             <p:menuitem value="COMPROMISO" icon="fa fa-compress"  actionListener="#{tipificarBean.consultarTipificacion(5,'COMPROMISO')}" ajax="false" update="panelTipificaciones"  /> -->
+<!--                             <p:menuitem value="NO CONTACTO" icon="fa fa-child"  actionListener="#{tipificarBean.consultarTipificacion(6,'NO CONTACTO')}" ajax="false" update="panelTipificaciones"  /> -->
+<!--                             <p:menuitem value="ENVIO IVR" icon="fa fa-arrow-circle-right"  actionListener="#{tipificarBean.consultarTipificacion(7,'ENVIO IVR')}" ajax="false" update="panelTipificaciones"  /> -->
+<!--                             <p:menuitem value="ENVIO SMS" icon="fa fa-envelope-o"  actionListener="#{tipificarBean.consultarTipificacion(8,'ENVIO SMS')}" ajax="false" update="panelTipificaciones"  /> -->
+
+
+<!--                             <p:menuitem id="custom4" value="Menú de superposición" icon="fa fa-fw fa-bars" actionListener="#{guestPreferences.setMenuLayout('overlay')}" ajax="false"/> -->
+<!--                             <p:menuitem id="custom5" value="Menu horizontal" icon="fa fa-fw fa-bars" actionListener="#{guestPreferences.setMenuLayout('horizontal')}" ajax="false"/> -->
+
+
+<!--  <p:menuitem id="om_ltr" value="Izquierda" icon="fa fa-fw fa-align-left" actionListener="#{guestPreferences.setOrientationRTL(false)}" ajax="false" /> -->
+
+
+
+

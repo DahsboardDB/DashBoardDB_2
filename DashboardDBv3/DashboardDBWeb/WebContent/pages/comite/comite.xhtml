@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form>
+		<p:growl id="growl" showDetail="true" sticky="true" />
+		<p:growl id="messages" />
+		<div>
+			<div class="exception-wrapper">
+				<p:panel id="contenidoBusquedaComite">
+					<p:dataTable var="comite" value="#{comiteBean.comites}"
+						selectionMode="single" rowKey="#{comite.documentoDeudor}"
+						emptyMessage="No hay gestiones por aprobar" reflow="true"
+						style="margin-bottom:20px">
+						<f:facet name="header">Gestiones Pendientes Por Aprobar</f:facet>
+
+
+						<p:column headerText="Documento Deudor"
+							sortBy="#{comite.documentoDeudor}">
+							<h:outputText value="#{comite.documentoDeudor}" />
+						</p:column>
+
+						<p:column headerText="Telefono Marcado"
+							sortBy="#{comite.telefonoMarcado}">
+							<h:outputText value="#{comite.telefonoMarcado}" />
+						</p:column>
+
+						<p:column headerText="Asesor" sortBy="#{comite.asesor}">
+							<h:outputText value="#{comite.asesor}" />
+						</p:column>
+						
+						<p:column headerText="Fecha Creación"
+							sortBy="#{comite.fechaCrea}">
+							<h:outputText value="#{comite.fechaCrea}" />
+						</p:column>
+
+						<p:column headerText="Valor Descuento Diferenciadoo"
+							sortBy="#{comite.valorDescuentoDiferenciado}">
+							<h:outputText value="#{comite.valorDescuentoDiferenciado}">
+								<f:convertNumber pattern="¤#,##0.00" currencySymbol="S/" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Valor Promesa"
+							sortBy="#{comite.valorPromesa}">
+							<h:outputText value="#{comite.valorPromesa}">
+								<f:convertNumber pattern="¤#,##0.00" currencySymbol="S/" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Fecha Promesa"
+							sortBy="#{comite.fechaPromesa}">
+							<h:outputText value="#{comite.fechaPromesa}" />
+						</p:column>
+
+						<p:column headerText="Tipificación"
+							sortBy="#{comite.tipificacion}">
+							<h:outputText value="#{comite.tipificacion}" />
+						</p:column>
+
+						<p:column headerText="Observación" sortBy="#{comite.observacion}">
+							<h:outputText value="#{comite.observacion}" />
+						</p:column>
+
+						<p:column headerText="" width="4%">
+							<p:commandButton update="@form:carDetail"
+								oncomplete="PF('carDialog').show()" icon="fa fa-check">
+								<f:setPropertyActionListener value="#{comite}"
+									target="#{comiteBean.selectedComite}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+
+					<p:dialog header="Aprobar Gestión" widgetVar="carDialog"
+						modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+						<p:outputPanel id="carDetail" style="text-align:center;">
+							<p:panelGrid columns="2" columnClasses="label,value">
+
+								<h:outputText value="Valor Promesa:"  rendered="#{comiteBean.selectedComite.valorPromesa != null}" />
+								<h:outputText value="#{comiteBean.selectedComite.valorPromesa}"  rendered="#{comiteBean.selectedComite.valorPromesa != null}">
+									<f:convertNumber pattern="¤#,##0.00" currencySymbol="S/" />
+								</h:outputText>
+
+								<h:outputText value="Observación:"  rendered="#{comiteBean.selectedComite.observacion != null}" />
+								<h:outputText value="#{comiteBean.selectedComite.observacion}"  rendered="#{comiteBean.selectedComite.observacion != null}" />
+								
+								<h:outputText value="Aprueba:" />
+								<p:commandButton  id="buttonDetallePriorizacion"
+									icon="fa fa-check"
+									ajax="false"
+									action="#{comiteBean.aprobarGestion(comiteBean.selectedComite.idComite)}"
+									onclick="PF('statusDialog').show();"
+									oncomplete="PF('statusDialog').hide();" update="@form:growl">
+								</p:commandButton>
+
+							</p:panelGrid>
+						</p:outputPanel>
+					</p:dialog>
+
+
+
+				</p:panel>
+			</div>
+		</div>
+	</h:form>
+
+
+</ui:composition>

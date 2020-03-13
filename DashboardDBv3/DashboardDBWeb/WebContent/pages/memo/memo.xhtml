@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<c:choose>
+		<c:when test="${memoBean.gestiones.size() > 0}">
+
+			<p:dataScroller var="gestion" value="#{memoBean.gestiones}"
+				style="border: none;" styleClass="green-btn">
+
+				<h:panelGrid columns="2" style="width:100%">
+					<p:outputPanel style="border-bottom: 1px solid grey">
+						<h:panelGrid>
+							<h:panelGrid columns="2" cellpadding="6">
+
+								<h:outputText value="Id Gestión: " />
+								<h:outputText value="#{gestion.idGestion}"
+									style="font-weight: bold" />
+
+								<h:outputText rendered="#{gestion.tipificacion != null}"
+									value="Nombre Tipificación: " />
+								<h:outputText rendered="#{gestion.tipificacion != null}"
+									value="#{gestion.tipificacion}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{gestion.nombreTercero != null}"
+									value="Nombre Tercero:" />
+								<h:outputText rendered="#{gestion.nombreTercero != null}"
+									value="#{gestion.nombreTercero}" style="font-weight: bold" />
+
+								<h:outputText
+									rendered="#{not empty gestion.telefonoAgendamiento}"
+									value="Teléfono Agendamiento:" />
+								<h:outputText
+									rendered="#{not empty gestion.telefonoAgendamiento}"
+									value="#{gestion.telefonoAgendamiento}"
+									style="font-weight: bold" />
+
+								<h:outputText rendered="#{gestion.telefonoMarcado != null}"
+									value="Teléfono Marcado:" />
+								<h:outputText rendered="#{gestion.telefonoMarcado != null}"
+									value="#{gestion.telefonoMarcado}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{gestion.fechaAgendamiento != null}"
+									value="Fecha Agendamiento:" />
+								<h:outputText rendered="#{gestion.fechaAgendamiento != null}"
+									value="#{gestion.fechaAgendamiento}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{gestion.fechaPromesa != null}"
+									value="Fecha Promesa:" />
+								<h:outputText rendered="#{gestion.fechaPromesa != null}"
+									value="#{gestion.fechaPromesa}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{gestion.nombreAsesor  != null}"
+									value="Asesor:" />
+								<h:outputText rendered="#{gestion.nombreAsesor  != null}"
+									value="#{gestion.nombreAsesor}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{gestion.valorPromesa != null}"
+									value="Valor Promesa:" />
+								<h:outputText rendered="#{gestion.valorPromesa != null}"
+									value="#{gestion.valorPromesa}" style="font-weight: bold">
+									<f:convertNumber pattern="¤#,##0.00" currencySymbol="S/" />
+								</h:outputText>
+
+								<h:outputText rendered="#{not empty gestion.aprobadoPor}"
+									value="Gestion Aprobada Por:" />
+								<h:outputText rendered="#{not empty gestion.aprobadoPor}"
+									value="#{gestion.aprobadoPor}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{gestion.observacion != null}"
+									value="Observación:" />
+								<h:outputText rendered="#{gestion.observacion != null}"
+									value="#{gestion.observacion}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{gestion.fechaLlamada  != null}"
+									value="Fecha Último Contacto:" />
+								<h:outputText rendered="#{gestion.fechaLlamada != null}"
+									value="#{gestion.fechaLlamada}" style="font-weight: bold" />
+
+								<h:outputText rendered="#{not empty gestion.idCall}"
+									value="Id Call:" />
+								<h:outputText rendered="#{not empty gestion.idCall}"
+									value="#{gestion.idCall}" style="font-weight: bold" />
+
+								<br />
+								<br />
+
+
+									<p:dataTable id="table" var="cuota" value="#{gestion.acuerdos}"
+									    rendered="#{gestion.acuerdos.size() > 0}"
+										emptyMessage="No hay cuotas"
+										rowKey="#{cuota.acuerdoCuota.idAcuerdoCuota}"
+										selectionMode="single" reflow="true"
+										style="margin-bottom:20px">
+										<f:facet name="header">Cuotas</f:facet>
+
+										<p:column headerText="Número de Cuota"
+											sortBy="#{cuota.acuerdoCuota.numeroCuota}">
+											<h:outputText value="#{cuota.acuerdoCuota.numeroCuota}" />
+										</p:column>
+
+										<p:column headerText="Valor de Cuota"
+											sortBy="#{cuota.acuerdoCuota.valorAcuerdo}">
+											<h:outputText value="#{cuota.acuerdoCuota.valorAcuerdo}">
+												<f:convertNumber pattern="¤#,##0.00" currencySymbol="S/" />
+											</h:outputText>
+										</p:column>
+
+										<p:column headerText="Fecha de Acuerdo"
+											sortBy="#{cuota.acuerdoCuota.fechaAcuerdo}">
+											<h:outputText value="#{cuota.acuerdoCuota.fechaAcuerdo}" />
+										</p:column>
+									</p:dataTable>
+
+								<br />
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:outputPanel>
+				</h:panelGrid>
+			</p:dataScroller>
+
+		</c:when>
+		<c:otherwise>
+			<p>No hay Gestiones para este Deudor</p>
+		</c:otherwise>
+	</c:choose>
+
+</ui:composition>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:form id="frmBuscar">
+		<center>
+			<div class="exception-top">
+				<br /> <br /> <br /> <br /> <br /> <span
+					class="exception-summary">Búsqueda</span>
+				<table>
+					<tr>
+						<td><span class="exception-detail">Ingrese el id, cuc,
+								identificación o correo del cliente que desea buscar.</span></td>
+						<td><p:inputText value="#{busquedaBean.numeroDocumento}"
+								id="txtBuscar" /></td>
+						<td><p:selectOneMenu id="slcTipoDocumento" required="true"
+							requiredMessage="Por favor seleccione el tipo de documento"
+							value="#{busquedaBean.selectedTipoDocumento}"
+							style="width:50%" autoWidth="false">
+							
+							<f:selectItem itemLabel="Selecione....." itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems var="tipo"
+								value="#{busquedaBean.tiposDocumento}"
+								itemValue="#{tipo.codigoTipoDocumento}"
+								itemLabel="#{tipo.descripcion}" />
+							<p:message for="slcTipoDocumento" />
+						</p:selectOneMenu></td>		
+								
+						<td><p:commandButton id="buscarCont" outcome="/dashboard"
+								value="BUSCAR" icon="fa fa-search" styleClass="green-btn"
+								action="#{busquedaBean.buscar}"
+								onclick="PF('statusDialog').show();"
+								oncomplete="PF('statusDialog').hide();" process="frmBuscar"
+								update="frmBuscar:contenidoBusqueda">
+							</p:commandButton></td>
+					</tr>
+				</table>
+			</div>
+		</center>
+
+		<br />
+		<br />
+		<br />
+
+		<div>
+			<div class="exception-wrapper">
+				<p:panel id="contenidoBusqueda">
+					<p:dataTable var="cliente" value="#{busquedaBean.clientes}"
+						selectionMode="single" rowKey="#{cliente.numeroDocumentoDeudor}"
+						reflow="true" style="margin-bottom:20px">
+						<f:facet name="header">Clientes</f:facet>
+
+						<p:column headerText="Id Deudor" sortBy="#{cliente.idDeudor}">
+							<h:outputText value="#{cliente.idDeudor}" />
+						</p:column>
+
+						<p:column headerText="Nombre"
+							sortBy="#{cliente.nombreDeudor}">
+							<h:outputText value="#{cliente.nombreDeudor}" />
+						</p:column>
+
+						<p:column headerText="Tipo Documento" sortBy="#{cliente.tipoDocumentoDeudor}">
+							<h:outputText value="#{cliente.tipoDocumentoDeudor}" />
+						</p:column>
+						
+						<p:column headerText="Número Documento" sortBy="#{cliente.numeroDocumentoDeudor}">
+							<h:outputText value="#{cliente.numeroDocumentoDeudor}" />
+						</p:column>
+
+						<p:column headerText="" width="4%">
+							<p:commandButton id="buttonDetallePriorizacion"
+								icon="ui-icon-pencil" styleClass="green-btn"
+								action="#{navegacionBean.redireccionarDatosCliente(cliente.tipoDocumentoDeudor,cliente.numeroDocumentoDeudor)}"
+								onclick="PF('statusDialog').show();"
+								oncomplete="PF('statusDialog').hide();">
+								<f:setPropertyActionListener value="#{cliente}"
+									target="#{clienteBean.cliente}"></f:setPropertyActionListener>
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+
+					<center>
+						<p:outputLabel value="No se encontraron resultados."
+							rendered="#{busquedaBean.sinResultados}"
+							style="    font-size: large;font-weight: bold;"></p:outputLabel>
+					</center>
+				</p:panel>
+			</div>
+		</div>
+	</h:form>
+
+
+</ui:composition>

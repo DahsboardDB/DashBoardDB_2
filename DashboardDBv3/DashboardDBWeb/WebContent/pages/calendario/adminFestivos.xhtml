@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form enctype="multipart/form-data">
+		<p:growl id="messages" showDetail="true" />
+
+		<p:panel header="Descargar plantilla festivos">
+			<p:commandButton ajax="false"
+				onclick="PrimeFaces.monitorDownload(start, stop);"
+				icon="ui-icon-arrowthick-1-s" value="Descargar"
+				actionListener="#{adminFestivosBean.plantillaXLS}">
+				<p:fileDownload value="#{adminFestivosBean.file2}" />
+			</p:commandButton>
+		</p:panel>
+
+		<br />
+		<br />
+
+		<p:panel header="Subir plantilla festivos">
+			<p:fileUpload value="#{adminFestivosBean.file}" mode="simple"
+				skinSimple="true" />
+			<br />
+			<br />
+			<p:commandButton value="Subir" ajax="false"
+				action="#{adminFestivosBean.upload}" />
+		</p:panel>
+	</h:form>
+
+
+</ui:composition>

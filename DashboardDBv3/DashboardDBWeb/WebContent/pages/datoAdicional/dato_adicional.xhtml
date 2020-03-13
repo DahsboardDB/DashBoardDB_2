@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:messages id="messages" showDetail="true" closable="true"></p:messages>
+		<p:growl id="msgs" showDetail="true" />
+
+		<p:panelGrid style="width: 100%;">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="8">Información Deudor</p:column>
+				</p:row>
+			</f:facet>
+
+			<p:row>
+				<p:column colspan="1" style="font-weight: bold;">
+					<h:outputText value="Nombre :" style="width:12;" />
+				</p:column>
+				<p:column colspan="3" style="font-weight: bold;">
+					<h:outputText value="#{clienteBean.cliente.nombreDeudor}"
+						style="width:98%" />
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column colspan="1" style="font-weight: bold;">
+					<h:outputText value="Dirección :" style="width:12;" />
+				</p:column>
+
+				<p:column colspan="3" style="font-weight: bold;">
+					<p:inputText value="#{datoAdicionalBean.direccion}"
+						style="width:98%" />
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column colspan="1" style="font-weight: bold;">
+					<h:outputText value="Email :" style="width:12;" />
+				</p:column>
+				<p:column colspan="3" style="font-weight: bold;">
+					<p:inputText value="#{datoAdicionalBean.email}" style="width:98%" />
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+
+		<p:panel id="pnlTelefonosDatoAdicional">
+			<p:dataTable id="infoTelefonos" var="telefono"
+				value="#{datoAdicionalBean.telefonos}" editable="true"
+				style="margin-bottom:20px"
+				emptyMessage="No tiene Telefonos Asociados">
+
+				<f:facet name="header">
+           			Telefonos
+       			</f:facet>
+
+				<p:column headerText="Código Telefono">
+					<h:outputText value="#{telefono.codigoTelefono}" />
+				</p:column>
+
+				<p:column headerText="Número Telefono">
+					<h:outputText value="#{telefono.numeroTelefono}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:panelGrid id="pnlNuevoTelefono" style="width: 100%;">
+			<f:facet name="header">
+				<p:row>
+					<p:column colspan="5">Agregar Telefono</p:column>
+				</p:row>
+			</f:facet>
+			<p:row>
+				<p:column>
+					<p:selectOneMenu value="#{datoAdicionalBean.nuevoTipoTelefono}">
+						<f:selectItem itemLabel="Móvil" itemValue="Móvil" />
+						<f:selectItem itemLabel="Fijo" itemValue="Fijo" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column>
+					<p:inputText value="#{datoAdicionalBean.nuevoTelefono}"
+						placeholder="telefono" />
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+
+		<p:panelGrid style="width: 100%;">
+			<p:commandButton value="Guardar Dato Adicional"
+				action="#{datoAdicionalBean.guardarDatoAdicional}"
+				update="@form:msgs" />
+		</p:panelGrid>
+	</h:form>
+
+
+
+</ui:composition>
